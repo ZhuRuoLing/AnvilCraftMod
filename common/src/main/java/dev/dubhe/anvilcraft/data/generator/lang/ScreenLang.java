@@ -72,5 +72,8 @@ public class ScreenLang {
         provider.add("tooltip.anvilcraft.heliostats.too_far", "  The illumination pos is too far");
         provider.add("tooltip.anvilcraft.heliostats.unspecified_irradiation_block", "  Unspecified irradiation block");
         provider.add("tooltip.anvilcraft.heliostats.unknown", "  Unknown reason");
+
+        provider.add("screen.anvilcraft.insight.title", "Insight");
+        provider.add("tooltip.anvilcraft.press_to_insight", "Press [%s] to Insight");
     }
 }

@@ -64,7 +64,7 @@ public class AbstractContainerScreenMixin extends Screen {
                         : TooltipFlag.Default.NORMAL
         );
         if (!InsightableItem.isItemInsightable(stack)) return result;
-        MutableComponent line = Component.translatable("tooltip.anvilcraft.press_to_insight")
+        MutableComponent line = Component.translatable("tooltip.anvilcraft.press_to_insight", "X")
                 .withStyle(ChatFormatting.GRAY);
         if (anvilCraft$pressed) {
             line.append(Component.literal(" [").withStyle(ChatFormatting.WHITE));
