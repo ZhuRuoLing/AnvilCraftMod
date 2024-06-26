@@ -74,14 +74,17 @@ public class ShapeModifiableButton<T> extends Button {
                     16777215 | Mth.ceil(this.alpha * 255.0F) << 24
             );
         }
-        ResourceLocation iconItem = currentShape.icon.get();
-        if (iconItem != null) {
-            Item item = BuiltInRegistries.ITEM.get(iconItem);
-            guiGraphics.renderFakeItem(
-                    item.getDefaultInstance(),
-                    getX() + currentShape.iconPositionX,
-                    getY() + currentShape.iconPositionY
-            );
+        List<ResourceLocation> icon = currentShape.icon.get();
+        if (icon != null && !icon.isEmpty()) {
+            ResourceLocation iconItem = icon.get(0);
+            if (iconItem != null) {
+                Item item = BuiltInRegistries.ITEM.get(iconItem);
+                guiGraphics.renderFakeItem(
+                        item.getDefaultInstance(),
+                        getX() + currentShape.iconPositionX,
+                        getY() + currentShape.iconPositionY
+                );
+            }
         }
         if (this.isHovered()) {
             List<FormattedCharSequence> fcs = currentShape.tooltip.get();
@@ -115,7 +118,7 @@ public class ShapeModifiableButton<T> extends Button {
             int iconPositionX,
             int iconPositionY,
             Supplier<Component> text,
-            Supplier<ResourceLocation> icon,
+            Supplier<List<ResourceLocation>> icon,
             Supplier<List<FormattedCharSequence>> tooltip,
             OnPress press
     ) {

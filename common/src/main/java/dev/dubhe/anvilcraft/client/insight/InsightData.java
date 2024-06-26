@@ -19,28 +19,30 @@ public class InsightData {
             Codec.either(Codec.STRING.listOf(), Codec.STRING)
                     .fieldOf("feature")
                     .forGetter(o -> Either.left(o.feature)),
-            ResourceLocation.CODEC.fieldOf("icon").forGetter(o -> o.icon),
+            Codec.either(ResourceLocation.CODEC.listOf(), ResourceLocation.CODEC)
+                    .fieldOf("icon").forGetter(o -> Either.left(o.icon)),
             ResourceLocation.CODEC.optionalFieldOf("structure").forGetter(o -> Optional.ofNullable(o.structure)),
             Codec.STRING.listOf().fieldOf("text").forGetter(o -> o.text)
     ).apply(ins, InsightData::new));
 
     private final String title;
     private List<String> feature;
-    private final ResourceLocation icon;
+    private List<ResourceLocation> icon;
     private ResourceLocation structure;
     private final List<String> text;
 
     InsightData(
             String title,
             Either<List<String>, String> feature,
-            ResourceLocation icon,
+            Either<List<ResourceLocation>, ResourceLocation> icon,
             Optional<ResourceLocation> structure,
             List<String> text
     ) {
         this.title = title;
         feature.ifLeft(l -> this.feature = l)
                 .ifRight(r -> this.feature = List.of(r));
-        this.icon = icon;
+        icon.ifLeft(l -> this.icon = l)
+                .ifRight(r -> this.icon = List.of(r));
         this.structure = structure.orElse(null);
         this.text = text;
     }
