@@ -158,6 +158,7 @@ public class ModItemTags {
     public static final TagKey<Item> VOID_RESISTANT = bind("void_resistant");
     public static final TagKey<Item> REINFORCED_CONCRETE = bind("reinforced_concrete");
     public static final TagKey<Item> SEEDS_PACK_CONTENT = bind("seeds_pack_content");
+    public static final TagKey<Item> INSIGHTABLE = bind("insightable");
 
     public static @NotNull TagKey<Item> bindC(String id) {
         return TagKey.create(Registries.ITEM, new ResourceLocation("c", id));

@@ -80,6 +80,7 @@ import dev.dubhe.anvilcraft.item.CursedBlockItem;
 import dev.dubhe.anvilcraft.item.EndDustBlockItem;
 import dev.dubhe.anvilcraft.item.HasMobBlockItem;
 import dev.dubhe.anvilcraft.item.HeliostatsItem;
+import dev.dubhe.anvilcraft.item.InsightableBlockItem;
 import dev.dubhe.anvilcraft.item.PlaceInWaterBlockItem;
 import dev.dubhe.anvilcraft.item.ResinBlockItem;
 import dev.dubhe.anvilcraft.util.DangerUtil;
@@ -1547,7 +1548,8 @@ public class ModBlocks {
         .register();
     public static final BlockEntry<BlockPlacerBlock> BLOCK_PLACER = REGISTRATE
         .block("block_placer", BlockPlacerBlock::new)
-        .simpleItem()
+        .item(InsightableBlockItem::new)
+        .build()
         .initialProperties(() -> Blocks.IRON_BLOCK)
         .properties(BlockBehaviour.Properties::noOcclusion)
         .tag(BlockTags.MINEABLE_WITH_PICKAXE)
@@ -1607,7 +1609,8 @@ public class ModBlocks {
 
     public static final BlockEntry<ThermoelectricConverterBlock> THERMOELECTRIC_CONVERTER = REGISTRATE
         .block("thermoelectric_converter", ThermoelectricConverterBlock::new)
-        .simpleItem()
+        .item(InsightableBlockItem::new)
+        .build()
         .initialProperties(() -> Blocks.IRON_BLOCK)
         .properties(BlockBehaviour.Properties::noOcclusion)
         .tag(BlockTags.MINEABLE_WITH_PICKAXE)
