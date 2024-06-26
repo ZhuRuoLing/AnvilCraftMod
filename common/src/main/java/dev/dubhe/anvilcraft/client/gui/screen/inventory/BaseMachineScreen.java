@@ -1,6 +1,6 @@
 package dev.dubhe.anvilcraft.client.gui.screen.inventory;
 
-import dev.dubhe.anvilcraft.client.gui.component.OutputDirectionButton;
+import dev.dubhe.anvilcraft.client.gui.component.button.OutputDirectionButton;
 import dev.dubhe.anvilcraft.network.MachineOutputDirectionPack;
 import lombok.Getter;
 import lombok.Setter;

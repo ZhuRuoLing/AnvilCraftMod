@@ -2,8 +2,8 @@ package dev.dubhe.anvilcraft.client.gui.screen.inventory;
 
 import dev.dubhe.anvilcraft.AnvilCraft;
 import dev.dubhe.anvilcraft.api.depository.ItemDepositorySlot;
-import dev.dubhe.anvilcraft.client.gui.component.EnableFilterButton;
-import dev.dubhe.anvilcraft.client.gui.component.ItemCollectorButton;
+import dev.dubhe.anvilcraft.client.gui.component.button.EnableFilterButton;
+import dev.dubhe.anvilcraft.client.gui.component.button.CyclingButton;
 import dev.dubhe.anvilcraft.client.gui.component.TextWidget;
 import dev.dubhe.anvilcraft.inventory.ItemCollectorMenu;
 import dev.dubhe.anvilcraft.network.SlotDisableChangePack;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.BiFunction;
 
 public class ItemCollectorScreen extends AbstractContainerScreen<ItemCollectorMenu>
-    implements IFilterScreen<ItemCollectorMenu> {
+        implements IFilterScreen<ItemCollectorMenu> {
     private static final ResourceLocation CONTAINER_LOCATION =
             AnvilCraft.of("textures/gui/container/machine/background/item_collector.png");
     BiFunction<Integer, Integer, EnableFilterButton> enableFilterButtonSupplier =
@@ -67,27 +67,27 @@ public class ItemCollectorScreen extends AbstractContainerScreen<ItemCollectorMe
                 () -> Component.literal(Integer.toString(menu.getBlockEntity().getInputPower()))
         ));
         //range - +
-        this.addRenderableWidget(new ItemCollectorButton(
-                leftPos + 43, topPos + 23,
+        this.addRenderableWidget(new CyclingButton(
+                leftPos + 43, topPos + 23, "item_collector_button",
                 "minus", (b) -> {
             menu.getBlockEntity().getRangeRadius().previous();
             menu.getBlockEntity().getRangeRadius().notifyServer();
         }));
-        this.addRenderableWidget(new ItemCollectorButton(
-                leftPos + 81, topPos + 23,
+        this.addRenderableWidget(new CyclingButton(
+                leftPos + 81, topPos + 23, "item_collector_button",
                 "add", (b) -> {
             menu.getBlockEntity().getRangeRadius().next();
             menu.getBlockEntity().getRangeRadius().notifyServer();
         }));
         //cooldown - +
-        this.addRenderableWidget(new ItemCollectorButton(
-                leftPos + 43, topPos + 37,
+        this.addRenderableWidget(new CyclingButton(
+                leftPos + 43, topPos + 37, "item_collector_button",
                 "minus", (b) -> {
             menu.getBlockEntity().getCooldown().previous();
             menu.getBlockEntity().getCooldown().notifyServer();
         }));
-        this.addRenderableWidget(new ItemCollectorButton(
-                leftPos + 81, topPos + 37,
+        this.addRenderableWidget(new CyclingButton(
+                leftPos + 81, topPos + 37, "item_collector_button",
                 "add", (b) -> {
             menu.getBlockEntity().getCooldown().next();
             menu.getBlockEntity().getCooldown().notifyServer();

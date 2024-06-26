@@ -188,7 +188,8 @@ public class ModBlocks {
         .initialProperties(() -> Blocks.IRON_BLOCK)
         .blockstate((ctx, provider) -> {
         })
-        .simpleItem()
+        .item(InsightableBlockItem::new)
+        .build()
         .tag(ModBlockTags.MAGNET, BlockTags.MINEABLE_WITH_PICKAXE)
         .recipe((ctx, provider) -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ctx.get())
             .pattern("AAA")
@@ -204,7 +205,8 @@ public class ModBlocks {
         .initialProperties(() -> Blocks.IRON_BLOCK)
         .blockstate((ctx, provider) -> {
         })
-        .simpleItem()
+        .item(InsightableBlockItem::new)
+        .build()
         .tag(ModBlockTags.MAGNET, BlockTags.MINEABLE_WITH_PICKAXE)
         .recipe((ctx, provider) -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ctx.get())
             .pattern("AAA")

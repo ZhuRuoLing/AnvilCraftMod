@@ -1,0 +1,13 @@
+{
+  "title": "Example",
+  "feature": [
+    "anvilcraft:magnet",
+    "anvilcraft:hollow_magnet"
+  ],
+  "icon": "anvilcraft:magnet",
+  "structure": "anvilcraft:example_structure",
+  "text": [
+    "paragraph 1",
+    "paragraph 2"
+  ]
+}

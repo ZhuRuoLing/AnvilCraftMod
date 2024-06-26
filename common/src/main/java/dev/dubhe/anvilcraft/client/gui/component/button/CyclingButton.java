@@ -1,4 +1,4 @@
-package dev.dubhe.anvilcraft.client.gui.component;
+package dev.dubhe.anvilcraft.client.gui.component.button;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.dubhe.anvilcraft.AnvilCraft;
@@ -8,14 +8,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public class ItemCollectorButton extends Button {
+public class CyclingButton extends Button {
 
     private final ResourceLocation texture;
 
     /**
-     * 物品收集器 screen 的加减按钮
+     * 加减按钮/上下按钮
      */
-    public ItemCollectorButton(int x, int y, String variant, OnPress onPress) {
+    public CyclingButton(int x, int y, String base, String variant, OnPress onPress) {
         super(x,
                 y,
                 10,
@@ -24,7 +24,7 @@ public class ItemCollectorButton extends Button {
                 onPress,
                 (var) -> Component.literal(variant)
         );
-        texture = AnvilCraft.of("textures/gui/container/machine/item_collector_button_%s.png".formatted(variant));
+        texture = AnvilCraft.of("textures/gui/container/machine/%s_%s.png".formatted(base, variant));
     }
 
     @Override

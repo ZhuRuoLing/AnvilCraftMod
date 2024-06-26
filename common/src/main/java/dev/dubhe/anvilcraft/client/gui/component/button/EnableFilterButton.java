@@ -1,4 +1,4 @@
-package dev.dubhe.anvilcraft.client.gui.component;
+package dev.dubhe.anvilcraft.client.gui.component.button;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.dubhe.anvilcraft.AnvilCraft;

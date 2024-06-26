@@ -1,7 +1,7 @@
 package dev.dubhe.anvilcraft.client.gui.screen.inventory;
 
 import dev.dubhe.anvilcraft.AnvilCraft;
-import dev.dubhe.anvilcraft.client.gui.component.SilencerButton;
+import dev.dubhe.anvilcraft.client.gui.component.button.SilencerButton;
 import dev.dubhe.anvilcraft.inventory.ActiveSilencerMenu;
 import dev.dubhe.anvilcraft.network.ServerboundAddMutedSoundPacket;
 import dev.dubhe.anvilcraft.network.ServerboundRemoveMutedSoundPacket;

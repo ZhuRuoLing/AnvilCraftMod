@@ -1,7 +1,9 @@
 package dev.dubhe.anvilcraft.mixin;
 
+import dev.dubhe.anvilcraft.client.gui.screen.inventory.InsightScreen;
 import dev.dubhe.anvilcraft.item.InsightableItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -106,7 +108,10 @@ public class AbstractContainerScreenMixin extends Screen {
         }
     }
 
-    private void openInsight(ItemStack itemStack){
-
+    @Unique
+    private void openInsight(ItemStack itemStack) {
+        InsightScreen screen = new InsightScreen();
+        screen.setInitialSearch(itemStack);
+        Minecraft.getInstance().setScreen(screen);
     }
 }

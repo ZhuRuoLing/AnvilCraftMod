@@ -18,9 +18,6 @@ import dev.dubhe.anvilcraft.network.SliderInitPack;
 import dev.dubhe.anvilcraft.network.SliderUpdatePack;
 import dev.dubhe.anvilcraft.network.SlotDisableChangePack;
 import dev.dubhe.anvilcraft.network.SlotFilterChangePack;
-import dev.dubhe.anvilcraft.network.insight.ClientboundInsightStructurePacket;
-import dev.dubhe.anvilcraft.network.insight.ServerboundRequestInsightPacket;
-import dev.dubhe.anvilcraft.network.insight.ServerboundRequestInsightStructurePacket;
 import net.minecraft.resources.ResourceLocation;
 
 public class ModNetworks {
@@ -92,21 +89,6 @@ public class ModNetworks {
     public static final ResourceLocation HELIOSTATS_IRRADIATION = Network.register(
             AnvilCraft.of("heliostats_irradiation_pack"),
             HeliostatsIrradiationPack.class, HeliostatsIrradiationPack::new
-    );
-
-    public static final ResourceLocation REQUEST_INSIGHT = Network.register(
-            AnvilCraft.of("request_insight"),
-            ServerboundRequestInsightPacket.class, ServerboundRequestInsightPacket::new
-    );
-
-    public static final ResourceLocation REQUEST_INSIGHT_STRUCTURE = Network.register(
-            AnvilCraft.of("request_insight_structure"),
-            ServerboundRequestInsightStructurePacket.class, ServerboundRequestInsightStructurePacket::new
-    );
-
-    public static final ResourceLocation INSIGHT_STRUCTURE = Network.register(
-            AnvilCraft.of("insight_structure"),
-            ClientboundInsightStructurePacket.class, ClientboundInsightStructurePacket::new
     );
 
     public static void register() {

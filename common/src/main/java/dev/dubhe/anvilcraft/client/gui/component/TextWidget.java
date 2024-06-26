@@ -17,12 +17,4 @@ public class TextWidget extends StringWidget {
     public Component getMessage() {
         return provider.get();
     }
-
-    /**
-     * 获取Widget文字
-     */
-    @FunctionalInterface
-    public interface TextProvider {
-        Component get();
-    }
 }
