@@ -39,6 +39,7 @@
     "ClientPacketListenerMixin",
     "ItemInHandRendererMixin",
     "LevelRendererMixin",
+    "MinecraftMixin",
     "TooltipRenderMixin",
     "accessor.ItemInHandRendererAccessor",
     "accessor.MinecraftAccessor"

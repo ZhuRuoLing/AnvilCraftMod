@@ -21,7 +21,7 @@ public class ShapeModifiableButton<T> extends Button {
     private ShapeDef currentShape = null;
     private final int order;
 
-    protected ShapeModifiableButton(int order) {
+    public ShapeModifiableButton(int order) {
         super(
                 0,
                 0,
@@ -35,11 +35,14 @@ public class ShapeModifiableButton<T> extends Button {
         this.order = order;
     }
 
-    void createShapeDef(T t, ShapeDef def) {
+    public void createShapeDef(T t, ShapeDef def) {
         shapeDefs.put(t, def);
     }
 
-    void setCurrentShape(T t) {
+    /**
+     * 更新按钮
+     */
+    public void setCurrentShape(T t) {
         ShapeDef shape = shapeDefs.get(t);
         if (shape == null) throw new RuntimeException("undefined shape %s".formatted(t));
         currentShape = shape;
@@ -55,7 +58,7 @@ public class ShapeModifiableButton<T> extends Button {
                 currentShape.texture,
                 getX(),
                 getY(),
-                currentShape.offsetU + (isHovered() ? currentShape.hoveringOffsetV : 0),
+                currentShape.offsetU + (isHovered() ? currentShape.hoveringOffsetU : 0),
                 currentShape.offsetV + (isHovered() ? currentShape.hoveringOffsetV : 0),
                 this.width,
                 this.height,
@@ -74,7 +77,11 @@ public class ShapeModifiableButton<T> extends Button {
         ResourceLocation iconItem = currentShape.icon.get();
         if (iconItem != null) {
             Item item = BuiltInRegistries.ITEM.get(iconItem);
-            guiGraphics.renderFakeItem(item.getDefaultInstance(), getX() + 2, getY() + 2);
+            guiGraphics.renderFakeItem(
+                    item.getDefaultInstance(),
+                    getX() + currentShape.iconPositionX,
+                    getY() + currentShape.iconPositionY
+            );
         }
         if (this.isHovered()) {
             List<FormattedCharSequence> fcs = currentShape.tooltip.get();
@@ -93,7 +100,7 @@ public class ShapeModifiableButton<T> extends Button {
         this.currentShape.press.onPress(this);
     }
 
-    record ShapeDef(
+    public record ShapeDef(
             int x,
             int y,
             int width,
@@ -105,6 +112,8 @@ public class ShapeModifiableButton<T> extends Button {
             int hoveringOffsetV,
             int textureWidth,
             int textureHeight,
+            int iconPositionX,
+            int iconPositionY,
             Supplier<Component> text,
             Supplier<ResourceLocation> icon,
             Supplier<List<FormattedCharSequence>> tooltip,
