@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class InsightScreen extends Screen {
@@ -184,7 +185,7 @@ public class InsightScreen extends Screen {
                                 8,
                                 6,
                                 () -> null,
-                                () -> AnvilCraft.of("magnet_block"),
+                                () -> Collections.singletonList(AnvilCraft.of("magnet_block")),
                                 () -> null,
                                 (b) -> {
 
