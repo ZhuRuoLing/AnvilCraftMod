@@ -441,6 +441,7 @@ public class ModBlocks {
             AnvilCraft.of("block/polished_heavy_iron_block"),
             AnvilCraft.of("block/polished_heavy_iron_block")))
         .simpleItem()
+        .loot((tables, block) -> tables.add(block, tables::createSlabItemTable))
         .tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .register();
     public static final BlockEntry<? extends Block> POLISHED_HEAVY_IRON_STAIRS = REGISTRATE
@@ -465,6 +466,7 @@ public class ModBlocks {
             AnvilCraft.of("block/cut_heavy_iron_block"),
             AnvilCraft.of("block/cut_heavy_iron_block")))
         .simpleItem()
+        .loot((tables, block) -> tables.add(block, tables::createSlabItemTable))
         .tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .register();
     public static final BlockEntry<? extends Block> CUT_HEAVY_IRON_STAIRS = REGISTRATE
@@ -532,7 +534,8 @@ public class ModBlocks {
         .block("zinc_block", Block::new)
         .initialProperties(() -> Blocks.IRON_BLOCK)
         .simpleItem()
-        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS,
+                ModBlockTags.FORGE_ZINC_BLOCKS, ModBlockTags.ZINC_BLOCKS)
         .recipe((ctx, provider) -> {
             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                 .pattern("AAA")
@@ -556,7 +559,8 @@ public class ModBlocks {
         .block("tin_block", Block::new)
         .initialProperties(() -> Blocks.IRON_BLOCK)
         .simpleItem()
-        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS,
+                ModBlockTags.FORGE_TIN_BLOCKS, ModBlockTags.TIN_BLOCKS)
         .recipe((ctx, provider) -> {
             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                 .pattern("AAA")
@@ -580,7 +584,8 @@ public class ModBlocks {
         .block("titanium_block", Block::new)
         .initialProperties(() -> Blocks.IRON_BLOCK)
         .simpleItem()
-        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS,
+                ModBlockTags.FORGE_TITANIUM_BLOCKS, ModBlockTags.TITANIUM_BLOCKS)
         .recipe((ctx, provider) -> {
             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                 .pattern("AAA")
@@ -606,7 +611,8 @@ public class ModBlocks {
         .item()
         .initialProperties(() -> new Item.Properties().fireResistant())
         .build()
-        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS,
+                ModBlockTags.TUNGSTEN_BLOCKS, ModBlockTags.FORGE_TUNGSTEN_BLOCKS)
         .recipe((ctx, provider) -> {
             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                 .pattern("AAA")
@@ -630,7 +636,8 @@ public class ModBlocks {
         .block("lead_block", Block::new)
         .initialProperties(() -> Blocks.IRON_BLOCK)
         .simpleItem()
-        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS,
+                ModBlockTags.FORGE_LEAD_BLOCKS, ModBlockTags.LEAD_BLOCKS)
         .recipe((ctx, provider) -> {
             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                 .pattern("AAA")
@@ -654,7 +661,8 @@ public class ModBlocks {
         .block("silver_block", Block::new)
         .initialProperties(() -> Blocks.IRON_BLOCK)
         .simpleItem()
-        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS,
+                ModBlockTags.FORGE_SILVER_BLOCKS, ModBlockTags.SILVER_BLOCKS)
         .recipe((ctx, provider) -> {
             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                 .pattern("AAA")
@@ -678,7 +686,8 @@ public class ModBlocks {
         .block("uranium_block", Block::new)
         .initialProperties(() -> Blocks.IRON_BLOCK)
         .simpleItem()
-        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS,
+                ModBlockTags.FORGE_URANIUM_BLOCKS, ModBlockTags.URANIUM_BLOCKS)
         .recipe((ctx, provider) -> {
             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                 .pattern("AAA")
@@ -702,7 +711,8 @@ public class ModBlocks {
         .block("bronze_block", Block::new)
         .initialProperties(() -> Blocks.IRON_BLOCK)
         .simpleItem()
-        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS,
+                ModBlockTags.FORGE_BRONZE_BLOCKS, ModBlockTags.BRONZE_BLOCKS)
         .recipe((ctx, provider) -> {
             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                 .pattern("AAA")
@@ -726,7 +736,8 @@ public class ModBlocks {
         .block("brass_block", Block::new)
         .initialProperties(() -> Blocks.IRON_BLOCK)
         .simpleItem()
-        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.BEACON_BASE_BLOCKS,
+                ModBlockTags.FORGE_BRASS_BLOCKS, ModBlockTags.BRASS_BLOCKS)
         .recipe((ctx, provider) -> {
             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                 .pattern("AAA")
@@ -1012,7 +1023,10 @@ public class ModBlocks {
         .properties(BlockBehaviour.Properties::noOcclusion)
         .blockstate((ctx, provider) -> {
         })
-        .simpleItem()
+        .item()
+        .model((ctx, provider) -> {
+        })
+        .build()
         .tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .register();
     public static final BlockEntry<? extends Block> HEATER = REGISTRATE
