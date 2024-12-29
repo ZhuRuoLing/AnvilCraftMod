@@ -17,16 +17,16 @@ public class CacheableBERenderingPipeline {
     private final ClientLevel level;
     private final Queue<Runnable> pendingCompiles = new ArrayDeque<>();
     private final Queue<Runnable> pendingUploads = new ArrayDeque<>();
-    private final Map<ChunkPos, RenderRegion> renderRegions = new HashMap<>();
+    private final Map<ChunkPos, CachedRegion> renderRegions = new HashMap<>();
     private boolean valid = true;
 
-    public RenderRegion getRenderRegion(ChunkPos chunkPos) {
+    public CachedRegion getRenderRegion(ChunkPos chunkPos) {
         if (renderRegions.containsKey(chunkPos)) {
             return renderRegions.get(chunkPos);
         }
-        RenderRegion renderRegion = new RenderRegion(chunkPos, this);
-        renderRegions.put(chunkPos, renderRegion);
-        return renderRegion;
+        CachedRegion cachedRegion = new CachedRegion(chunkPos, this);
+        renderRegions.put(chunkPos, cachedRegion);
+        return cachedRegion;
     }
 
     public CacheableBERenderingPipeline(ClientLevel level) {
@@ -68,7 +68,7 @@ public class CacheableBERenderingPipeline {
     }
 
     public void releaseBuffers() {
-        renderRegions.values().forEach(RenderRegion::releaseBuffers);
+        renderRegions.values().forEach(CachedRegion::releaseBuffers);
         valid = false;
     }
 

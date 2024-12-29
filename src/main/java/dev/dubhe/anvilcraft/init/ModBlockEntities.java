@@ -25,7 +25,7 @@ import dev.dubhe.anvilcraft.block.entity.RubyLaserBlockEntity;
 import dev.dubhe.anvilcraft.block.entity.RubyPrismBlockEntity;
 import dev.dubhe.anvilcraft.block.entity.SimpleChuteBlockEntity;
 import dev.dubhe.anvilcraft.block.entity.TeslaTowerBlockEntity;
-import dev.dubhe.anvilcraft.block.entity.ThermoelectricConverterBlockEntity;
+import dev.dubhe.anvilcraft.block.entity.ThermoelectricCollectorBlockEntity;
 import dev.dubhe.anvilcraft.block.entity.TransmissionPoleBlockEntity;
 import dev.dubhe.anvilcraft.client.renderer.blockentity.BatchCrafterRenderer;
 import dev.dubhe.anvilcraft.client.renderer.blockentity.ChargeCollectorRenderer;
@@ -36,6 +36,7 @@ import dev.dubhe.anvilcraft.client.renderer.blockentity.HeliostatsRenderer;
 import dev.dubhe.anvilcraft.client.renderer.blockentity.LaserBlockRenderer;
 
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import dev.dubhe.anvilcraft.client.renderer.blockentity.ThermoelectricCollectorRenderer;
 
 import static dev.dubhe.anvilcraft.AnvilCraft.REGISTRATE;
 
@@ -164,9 +165,10 @@ public class ModBlockEntities {
         .renderer(() -> LaserBlockRenderer::new)
         .register();
 
-    public static final BlockEntityEntry<ThermoelectricConverterBlockEntity> THERMOELECTRIC_CONVERTER = REGISTRATE
-        .blockEntity("thermoelectric_converter", ThermoelectricConverterBlockEntity::new)
-        .validBlocks(ModBlocks.THERMOELECTRIC_CONVERTER)
+    public static final BlockEntityEntry<ThermoelectricCollectorBlockEntity> THERMOELECTRIC_CONVERTER = REGISTRATE
+        .blockEntity("thermoelectric_collector", ThermoelectricCollectorBlockEntity::new)
+        .validBlocks(ModBlocks.THERMOELECTRIC_COLLECTOR)
+        .renderer(() -> ThermoelectricCollectorRenderer::new)
         .register();
 
     public static final BlockEntityEntry<MineralFountainBlockEntity> MINERAL_FOUNTAIN = REGISTRATE

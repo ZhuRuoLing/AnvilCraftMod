@@ -40,6 +40,14 @@ public class ServerLifecycleEventListener {
     }
 
     /**
+     * @param event 服务器刻事件
+     */
+    @SubscribeEvent
+    public static void onTick(@NotNull ServerTickEvent.Post event) {
+        ThermoManager.tick();
+    }
+
+    /**
      * @param event 服务器关闭事件
      */
     @SubscribeEvent

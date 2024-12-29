@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RenderRegion {
+public class CachedRegion {
     public final List<RenderType> BLOOM_RENDERTYPES = List.of(
         ModRenderTypes.LASER
     );
@@ -41,7 +41,7 @@ public class RenderRegion {
 
     private boolean isEmpty = true;
 
-    public RenderRegion(ChunkPos chunkPos, CacheableBERenderingPipeline pipeline) {
+    public CachedRegion(ChunkPos chunkPos, CacheableBERenderingPipeline pipeline) {
         this.chunkPos = chunkPos;
         this.pipeline = pipeline;
     }
@@ -151,7 +151,7 @@ public class RenderRegion {
         public void run() {
             lastRebuildTask = this;
             PoseStack poseStack = new PoseStack();
-            RenderRegion.this.isEmpty = true;
+            CachedRegion.this.isEmpty = true;
             FullyBufferedBufferSource bufferSource = new FullyBufferedBufferSource();
             for (BlockEntity be : blockEntityList) {
                 if (cancelled) {
@@ -174,12 +174,12 @@ public class RenderRegion {
                 );
                 poseStack.popPose();
             }
-            RenderRegion.this.isEmpty = bufferSource.isEmpty();
+            CachedRegion.this.isEmpty = bufferSource.isEmpty();
             bufferSource.upload(
-                RenderRegion.this::getBuffer,
+                CachedRegion.this::getBuffer,
                 pipeline::submitUploadTask
             );
-            RenderRegion.this.indexCountMap = bufferSource.indexCountMap;
+            CachedRegion.this.indexCountMap = bufferSource.indexCountMap;
             lastRebuildTask = null;
         }
 

@@ -1,13 +1,13 @@
 package dev.dubhe.anvilcraft.block;
 
-import dev.dubhe.anvilcraft.api.chargecollector.ThermoManager;
 import dev.dubhe.anvilcraft.api.hammer.IHammerRemovable;
-import dev.dubhe.anvilcraft.block.entity.ThermoelectricConverterBlockEntity;
+import dev.dubhe.anvilcraft.block.entity.ThermoelectricCollectorBlockEntity;
 import dev.dubhe.anvilcraft.init.ModBlockEntities;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -18,24 +18,25 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.serialization.MapCodec;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Arrays;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class ThermoelectricConverterBlock extends BaseEntityBlock implements IHammerRemovable {
+public class ThermoelectricCollectorBlock extends BaseEntityBlock implements IHammerRemovable {
     public static final Direction[] DIRECTIONS = Direction.values();
+    public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 4, 16);
 
-    public ThermoelectricConverterBlock(Properties properties) {
+    public ThermoelectricCollectorBlock(Properties properties) {
         super(properties);
     }
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(ThermoelectricConverterBlock::new);
+        return simpleCodec(ThermoelectricCollectorBlock::new);
     }
 
     @Override
@@ -43,45 +44,32 @@ public class ThermoelectricConverterBlock extends BaseEntityBlock implements IHa
         return RenderShape.MODEL;
     }
 
-    @Override
-    public void neighborChanged(
-        BlockState state,
-        Level level,
-        BlockPos pos,
-        Block neighborBlock,
-        BlockPos neighborPos,
-        boolean movedByPiston) {
-        ThermoManager.getInstance(level).removeThermalBlock(neighborPos);
-        ThermoManager.getInstance(level).addThermoBlock(neighborPos, level.getBlockState(neighborPos));
-    }
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new ThermoelectricConverterBlockEntity(ModBlockEntities.THERMOELECTRIC_CONVERTER.get(), pos, state);
-    }
-
-    @Override
-    public void onRemove(
-        BlockState state,
-        Level level,
-        BlockPos pos,
-        BlockState newState,
-        boolean movedByPiston) {
-        Arrays.stream(DIRECTIONS).map(pos::relative).forEach(ThermoManager.getInstance(level)::removeThermalBlock);
-        super.onRemove(state, level, pos, newState, movedByPiston);
+        return new ThermoelectricCollectorBlockEntity(ModBlockEntities.THERMOELECTRIC_CONVERTER.get(), pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
-        Level level, BlockState state, BlockEntityType<T> type) {
-        if (level.isClientSide()) {
-            return null;
-        }
+        Level level,
+        BlockState state,
+        BlockEntityType<T> type
+    ) {
         return createTickerHelper(
             type,
             ModBlockEntities.THERMOELECTRIC_CONVERTER.get(),
-            ((level1, blockPos, blockState, blockEntity) -> blockEntity.tick()));
+            ((level1, blockPos, blockState, blockEntity) -> blockEntity.tick())
+        );
+    }
+
+    public VoxelShape getShape(
+        BlockState state,
+        BlockGetter level,
+        BlockPos pos,
+        CollisionContext context
+    ) {
+        return CreativeGeneratorBlock.SHAPE;
     }
 }

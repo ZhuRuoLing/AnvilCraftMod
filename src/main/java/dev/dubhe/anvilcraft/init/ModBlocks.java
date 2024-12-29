@@ -89,7 +89,7 @@ import dev.dubhe.anvilcraft.block.SpaceOvercompressorBlock;
 import dev.dubhe.anvilcraft.block.SpectralAnvilBlock;
 import dev.dubhe.anvilcraft.block.StampingPlatformBlock;
 import dev.dubhe.anvilcraft.block.SupercriticalNestingShulkerBoxBlock;
-import dev.dubhe.anvilcraft.block.ThermoelectricConverterBlock;
+import dev.dubhe.anvilcraft.block.ThermoelectricCollectorBlock;
 import dev.dubhe.anvilcraft.block.TransmissionPoleBlock;
 import dev.dubhe.anvilcraft.block.state.Color;
 import dev.dubhe.anvilcraft.block.state.Cube3x3PartHalf;
@@ -881,8 +881,8 @@ public class ModBlocks {
                 .save(p);
         })
         .register();
-    public static final BlockEntry<ThermoelectricConverterBlock> THERMOELECTRIC_CONVERTER = REGISTRATE
-        .block("thermoelectric_converter", ThermoelectricConverterBlock::new)
+    public static final BlockEntry<ThermoelectricCollectorBlock> THERMOELECTRIC_COLLECTOR = REGISTRATE
+        .block("thermoelectric_collector", ThermoelectricCollectorBlock::new)
         .simpleItem()
         .initialProperties(() -> Blocks.IRON_BLOCK)
         .properties(BlockBehaviour.Properties::noOcclusion)
@@ -892,21 +892,28 @@ public class ModBlocks {
         .recipe((ctx, provider) -> {
             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                 .pattern("ABA")
-                .pattern("CDC")
-                .pattern("ABA")
-                .define('A', ModItems.ROYAL_STEEL_INGOT)
-                .define('B', Items.COPPER_INGOT)
-                .define('C', ModBlocks.SAPPHIRE_BLOCK)
-                .define('D', Items.BLUE_ICE)
+                .pattern("BCB")
+                .pattern("DED")
+                .define('A', ModItemTags.COPPER_PLATES)
+                .define('B', ModItems.SAPPHIRE)
+                .define('C', Blocks.BLUE_ICE.asItem())
+                .define('D', ModItems.ROYAL_STEEL_INGOT)
+                .define('E', ModBlocks.CHARGE_COLLECTOR.asItem())
+                .unlockedBy(
+                    AnvilCraftDatagen.hasItem(ModItemTags.COPPER_PLATES),
+                    AnvilCraftDatagen.has(ModItemTags.COPPER_PLATES))
+                .unlockedBy(
+                    AnvilCraftDatagen.hasItem(ModItems.SAPPHIRE),
+                    AnvilCraftDatagen.has(ModItems.SAPPHIRE))
+                .unlockedBy(
+                    AnvilCraftDatagen.hasItem(Blocks.BLUE_ICE.asItem()),
+                    AnvilCraftDatagen.has(Blocks.BLUE_ICE.asItem()))
                 .unlockedBy(
                     AnvilCraftDatagen.hasItem(ModItems.ROYAL_STEEL_INGOT),
                     AnvilCraftDatagen.has(ModItems.ROYAL_STEEL_INGOT))
                 .unlockedBy(
-                    AnvilCraftDatagen.hasItem(Items.COPPER_INGOT), AnvilCraftDatagen.has(Items.COPPER_INGOT))
-                .unlockedBy(
-                    AnvilCraftDatagen.hasItem(ModBlocks.SAPPHIRE_BLOCK),
-                    AnvilCraftDatagen.has(ModBlocks.SAPPHIRE_BLOCK))
-                .unlockedBy(AnvilCraftDatagen.hasItem(Items.BLUE_ICE), AnvilCraftDatagen.has(Items.BLUE_ICE))
+                    AnvilCraftDatagen.hasItem(ModBlocks.CHARGE_COLLECTOR.asItem()),
+                    AnvilCraftDatagen.has(ModBlocks.CHARGE_COLLECTOR.asItem()))
                 .save(provider);
         })
         .register();

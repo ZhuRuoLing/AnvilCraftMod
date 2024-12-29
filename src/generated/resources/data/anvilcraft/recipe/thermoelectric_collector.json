@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:plates/copper"
+    },
+    "B": {
+      "item": "anvilcraft:sapphire"
+    },
+    "C": {
+      "item": "minecraft:blue_ice"
+    },
+    "D": {
+      "item": "anvilcraft:royal_steel_ingot"
+    },
+    "E": {
+      "item": "anvilcraft:charge_collector"
+    }
+  },
+  "pattern": [
+    "ABA",
+    "BCB",
+    "DED"
+  ],
+  "result": {
+    "count": 1,
+    "id": "anvilcraft:thermoelectric_collector"
+  }
+}

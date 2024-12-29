@@ -1,6 +1,6 @@
 package dev.dubhe.anvilcraft.api.chargecollector;
 
-import dev.dubhe.anvilcraft.block.entity.ChargeCollectorBlockEntity;
+import dev.dubhe.anvilcraft.block.entity.ThermoelectricCollectorBlockEntity;
 import dev.dubhe.anvilcraft.init.ModBlocks;
 
 import net.minecraft.core.BlockPos;
@@ -15,20 +15,17 @@ import net.minecraft.world.level.material.Fluids;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 import static dev.dubhe.anvilcraft.api.power.PowerGrid.GRID_TICK;
 
 public class ThermoManager {
     private static final Map<Level, ThermoManager> instances = new HashMap<>();
-    private final Set<ThermoBlock> thermoBlocks = new CopyOnWriteArraySet<>();
+    private final Map<ThermoBlock, ThermoelectricCollectorBlockEntity> thermoBlocks = new HashMap<>();
     private final List<ThermoEntry> thermoEntries = new ArrayList<>();
     private final Level level;
 
@@ -53,25 +50,14 @@ public class ThermoManager {
     }
 
     /**
-     * 移除热方块
-     */
-    public void removeThermalBlock(BlockPos pos) {
-        List<ThermoBlock> b = thermoBlocks.stream()
-            .filter(it -> it.getPos().equals(pos)).toList();
-        b.forEach(thermoBlocks::remove);
-    }
-
-    /**
      * 添加新的热方块
      */
-    public void addThermoBlock(BlockPos blockPos, BlockState state) {
+    public void addThermoBlock(BlockPos blockPos, BlockState state, ThermoelectricCollectorBlockEntity owner) {
+        if (thermoBlocks.keySet().stream().anyMatch(it -> it.pos.equals(blockPos))) return;
         Optional<ThermoEntry> op = thermoEntries.stream()
             .filter(it -> it.accepts(state) > 0)
             .findFirst();
-        if (op.isPresent()) {
-            thermoBlocks.removeIf(it -> blockPos.equals(it.pos));
-            thermoBlocks.add(new ThermoBlock(blockPos, state.getBlock(), op.get().ttl()));
-        }
+        op.ifPresent(thermoEntry -> thermoBlocks.put(new ThermoBlock(blockPos, state.getBlock(), thermoEntry.ttl()), owner));
     }
 
     ThermoManager(Level level) {
@@ -112,16 +98,25 @@ public class ThermoManager {
 
     private void tickThis() {
         if (this.level.getGameTime() % GRID_TICK != 0) return;
-        List<ThermoBlock> removal = new ArrayList<>();
-        for (ThermoBlock block : thermoBlocks) {
+        Map<ThermoBlock, BlockState> removal = new HashMap<>();
+        Map<ThermoelectricCollectorBlockEntity, Integer> resultMap = new HashMap<>();
+        for (Map.Entry<ThermoBlock, ThermoelectricCollectorBlockEntity> e : thermoBlocks.entrySet()) {
+            ThermoBlock block = e.getKey();
+            ThermoelectricCollectorBlockEntity owner = e.getValue();
             BlockPos blockPos = block.pos;
             BlockState state = this.level.getBlockState(blockPos);
-            Optional<ThermoEntry> optional =
-                    thermoEntries.stream().filter(it -> it.accepts(state) > 0).findFirst();
+            Optional<ThermoEntry> optional = thermoEntries.stream()
+                .filter(it -> it.accepts(state) > 0)
+                .findFirst();
             if (optional.isPresent()) {
                 ThermoEntry entry = optional.get();
                 if (block.ttl % 2 == 0) {
-                    charge(entry.accepts(state), blockPos);
+                    resultMap.compute(owner, (k, v) -> {
+                        if (v == null) {
+                            return entry.accepts(state);
+                        }
+                        return v + entry.accepts(state);
+                    });
                 }
                 if (entry.isCanIrritated() && (HeatedBlockRecorder.TRANSFORMS.get(state.getBlock())) != null) {
                     int requiredLevel = HeatedBlockRecorder.TRANSFORMS.get(state.getBlock()).remainCurrentTier();
@@ -136,7 +131,7 @@ public class ThermoManager {
                             block.decrease();
                         } else {
                             level.setBlockAndUpdate(blockPos, entry.transform(state));
-                            removal.add(block);
+                            removal.put(block, state);
                         }
                     }
                 } else {
@@ -144,26 +139,22 @@ public class ThermoManager {
                         block.decrease();
                     } else {
                         level.setBlockAndUpdate(blockPos, entry.transform(state));
-                        removal.add(block);
+                        removal.put(block, state);
                     }
                 }
             } else {
-                removal.add(block);
+                removal.put(block, state);
             }
         }
-        removal.forEach(thermoBlocks::remove);
-    }
-
-    private void charge(int chargeNum, BlockPos blockPos) {
-        Collection<ChargeCollectorManager.Entry> chargeCollectorCollection = ChargeCollectorManager.getInstance(level)
-            .getNearestChargeCollect(blockPos);
-        double surplus = chargeNum;
-        for (ChargeCollectorManager.Entry entry : chargeCollectorCollection) {
-            ChargeCollectorBlockEntity chargeCollectorBlockEntity = entry.getBlockEntity();
-            if (!ChargeCollectorManager.getInstance(level).canCollect(chargeCollectorBlockEntity, blockPos)) return;
-            surplus = chargeCollectorBlockEntity.incomingCharge(surplus, blockPos);
-            if (surplus == 0) return;
-        }
+        removal.forEach((thermoBlock, blockState) -> {
+            ThermoelectricCollectorBlockEntity owner = thermoBlocks.get(thermoBlock);
+            Optional<ThermoEntry> optional = thermoEntries.stream()
+                .filter(it -> it.accepts(blockState) > 0)
+                .findFirst();
+            if (optional.isEmpty()) return;
+            owner.setPower(owner.getOutputPower() - optional.get().accepts(blockState));
+        });
+        resultMap.forEach(ThermoelectricCollectorBlockEntity::setPower);
     }
 
     private static class ThermoBlock {
