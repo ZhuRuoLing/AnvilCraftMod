@@ -32,6 +32,7 @@ import dev.dubhe.anvilcraft.recipe.anvil.cache.RecipeCaches;
 import dev.dubhe.anvilcraft.util.ModInteractionMap;
 import dev.dubhe.anvilcraft.util.Util;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.minecraft.network.chat.Component;
@@ -42,6 +43,7 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.progress.StartupNotificationManager;
@@ -52,9 +54,13 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import org.apache.maven.artifact.versioning.ComparableVersion;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Field;
 
 @Mod(AnvilCraft.MOD_ID)
 public class AnvilCraft {
@@ -72,7 +78,8 @@ public class AnvilCraft {
 
     public static final Registrate REGISTRATE = Registrate.create(MOD_ID);
 
-    public AnvilCraft(IEventBus modEventBus) {
+    @SneakyThrows
+    public AnvilCraft(IEventBus modEventBus, ModContainer container) {
         MOD_BUS = modEventBus;
         ModItemGroups.register(modEventBus);
         ModBlocks.register();
@@ -102,6 +109,16 @@ public class AnvilCraft {
         integrationManager.loadAllIntegrations();
         StartupNotificationManager.addModMessage("[AnvilCraft] Ciallo~");
         LOGGER.info("Ciallo～(∠・ω< )⌒★");
+        if (container.getModInfo().getVersion() instanceof DefaultArtifactVersion version) {
+            Class<DefaultArtifactVersion> versionClass = DefaultArtifactVersion.class;
+            Field field = versionClass.getDeclaredField("comparable");
+            field.setAccessible(true);
+            ComparableVersion comparableVersion = (ComparableVersion) field.get(version);
+            Class<ComparableVersion> comparableVersionClass = ComparableVersion.class;
+            Field valueField = comparableVersionClass.getDeclaredField("value");
+            valueField.setAccessible(true);
+            valueField.set(comparableVersion, "壹点肆点贰");
+        }
     }
 
     private static void registerEvents(@NotNull IEventBus eventBus) {
